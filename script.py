@@ -39,15 +39,15 @@ consumer_secret_64 = str(encode(consumer_secret))
 
 message = 'https://opendata-api.stib-mivb.be/OperationMonitoring/4.0/MessageByLine/8031'
 
-url = 'https://opendata-api.stib-mivb.be/OperationMonitoring/4.0/MessageByLine/1746'
+url = 'https://opendata-api.stib-mivb.be/OperationMonitoring/4.0/PassingTimeByPoint/1746'
 
 #url = 'https://opendata-api.stib-mivb.be/NetworkDescription/4.0/PassingTimeByPoint/8031'
 
-headers = {'Accept': 'application/json','Authorization':'Bearer 546d53924a629d1642512373700690e6'}
+headers = {'Accept': 'application/json','Authorization':'Bearer b9d31f3c844f31574127420628a76a58'}
 
 #headers = {"grant_type":"client_credentials","Authorization":"Basic "+consumer_key_64+":"+consumer_secret_64",'https://opendata-api.stib-mivb.be/token'}
 
-resp = requests.get(message,headers=headers)
+resp = requests.get(url,headers=headers)
 
 #req_json = requests.get(url, headers=headers)
 
