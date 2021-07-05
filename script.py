@@ -16,8 +16,10 @@ def encode(message):
 
     #print(base64_message)
 #
-#
-#
+
+bonaventure = [1755,1746,1768,1711]
+
+
 url_token = "https://opendata-api.stib-mivb.be/token"
 
 consumer_key = "xptyNr3nnlk2hzxInUpOQUD3SAka"
@@ -27,43 +29,41 @@ consumer_key_64 = str(encode(consumer_key))
 consumer_secret = "kucY0Z71BKyubZxJPPQFQMeWhn0a"
 #
 consumer_secret_64 = str(encode(consumer_secret))
+#req_json = requests.get(url, headers=headers)
+# print(resp.text)
 
-
-message = 'https://opendata-api.stib-mivb.be/OperationMonitoring/4.0/MessageByLine/8031'
-
-time = 'https://opendata-api.stib-mivb.be/OperationMonitoring/4.0/PassingTimeByPoint/1746'
-
-#url = 'https://opendata-api.stib-mivb.be/NetworkDescription/4.0/PassingTimeByPoint/8031'
-
-headers = {'Accept': 'application/json','Authorization':'Bearer  80e5da470868266c4ac70c269f6fc02f '}
-
+# print(info.text)
 #headers = {"grant_type":"client_credentials","Authorization":"Basic "+consumer_key_64+":"+consumer_secret_64",'https://opendata-api.stib-mivb.be/token'}
 
-resp = requests.get(time,headers=headers)
+headers = {'Accept': 'application/json','Authorization':'Bearer  bfecc8937563333da081e38e5981baff '}
 
-info = requests.get(message,headers=headers)
+for i in bonaventure:
 
-#req_json = requests.get(url, headers=headers)
+    message = 'https://opendata-api.stib-mivb.be/OperationMonitoring/4.0/MessageByLine/' + str(i)
 
-#req_python = json.loads(req_json.text)
+    time = 'https://opendata-api.stib-mivb.be/OperationMonitoring/4.0/PassingTimeByPoint/' + str(i)
 
-get = resp.text
+    resp = requests.get(time,headers=headers)
 
-print(resp.text)
+    info = requests.get(message,headers=headers)
 
-print(info.text)
+    get = resp.text
 
-get = json.loads(resp.text)
+    print(get)
+
+    get = json.loads(resp.text)
 
 # numéro de ligne + destination
-print(get['points'][0]['passingTimes'][0]['lineId'], get['points'][0]['passingTimes'][0]['destination']['fr'])
-print(get['points'][0]['passingTimes'][0]['expectedArrivalTime'])
+# print(get['points'][0]['passingTimes'][0]['lineId'], get['points'][0]['passingTimes'][0]['destination']['fr'])
+# print(get['points'][0]['passingTimes'][0]['expectedArrivalTime'])
+#
+# print(get['points'][0]['passingTimes'][0]['lineId'], get['points'][0]['passingTimes'][1]['destination']['fr'])
+# print(get['points'][0]['passingTimes'][1]['expectedArrivalTime'])
 
-print(get['points'][1]['passingTimes'][0]['lineId'], get['points'][1]['passingTimes'][0]['destination']['fr'])
-print(get['points'][1]['passingTimes'][0]['expectedArrivalTime'])
+    print(len(get))
 
-print(len(get))
 
-t = requests.get(url_token,headers)
+    for j in range(len(get)+1):
 
-#print(t)
+        print(get['points'][0]['passingTimes'][j]['lineId'], get['points'][0]['passingTimes'][j]['destination']['fr'])
+        print(get['points'][0]['passingTimes'][j]['expectedArrivalTime'])
