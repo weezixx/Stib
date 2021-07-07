@@ -2,14 +2,24 @@ import pycurl
 import requests
 import base64
 import json
+import datetime
 
 # TODO : faire la différence entre le temps affiché et actuel (real time)
 
+now = datetime.datetime.now()
 
-
+def until(temps):
+    obj = datetime.datetime.strptime(temps, "%Y-%m-%dT%H:%M:%S%z")
+    temps_stib = datetime.datetime(obj.year, obj.month, obj.day,obj.hour, obj.minute, obj.second)
+    temps_present = datetime.datetime(now.year, now.month, now.day,now.hour, now.minute, now.second)
+    td = temps_stib - temps_present
+    print("td",td)
+    print("td", td.total_seconds())
+    td = td.total_seconds()
+    td /= 60
+    print("temps restant : ",int(td))
 
 bonaventure = [1755,1746,1768,1711,1680]
-
 
 
 accessKeys = 'GFlpfof6tMWyLC6HwUeonUwV43Ua:DMYHLByDdb0rcBOxSdXwVx8zrSYa'
@@ -44,21 +54,17 @@ for i in bonaventure:
 
     get = resp.text
 
-    print(get)
+    #print(get)
 
     get = json.loads(resp.text)
 
-# numéro de ligne + destination
-# print(get['points'][0]['passingTimes'][0]['lineId'], get['points'][0]['passingTimes'][0]['destination']['fr'])
-# print(get['points'][0]['passingTimes'][0]['expectedArrivalTime'])
-#
-# print(get['points'][0]['passingTimes'][0]['lineId'], get['points'][0]['passingTimes'][1]['destination']['fr'])
-# print(get['points'][0]['passingTimes'][1]['expectedArrivalTime'])
-
-    print(len(get))
 
 
-    for j in range(len(get)+1):
 
-        print(get['points'][0]['passingTimes'][j]['lineId'], get['points'][0]['passingTimes'][j]['destination']['fr'])
-        print(get['points'][0]['passingTimes'][j]['expectedArrivalTime'])
+
+
+
+    for j in get['points'][0]['passingTimes']:
+        print(j['lineId'],j['destination']['fr'])
+        print(j['expectedArrivalTime'])
+        print(until(j['expectedArrivalTime']))
