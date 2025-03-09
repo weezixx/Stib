@@ -6,6 +6,9 @@
 const char* ssid = "WiFi-2.4-F302";
 const char* wpd = "6CEcdAH6yg12";
 
+//Carte Node32s
+//Si problème de connexion ==> réinstaller pilote CP210x
+
 // URLs
 const char* urls[] = {
   "https://data.stib-mivb.be/api/explore/v2.1/catalog/datasets/waiting-time-rt-production/records?where=%22UZ-VUB%22&limit=100&refine=pointid%3A1755",
