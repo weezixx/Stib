@@ -43,6 +43,7 @@ bool parseDate(const char* isoDate, struct tm* timeStruct);
 #define MAGENTA         0xF81F
 #define YELLOW          0xFFE0  
 #define WHITE           0xFFFF
+#define PINK            0xF81F 
 
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1351.h>
@@ -97,28 +98,21 @@ void setup() {
 
 tft.fillScreen(BLACK);
 
-
-
-
-//9
-// tft.fillCircle(15,105+1,10, RED);
-// testdrawtext(12,102,1.5,"9",BLACK);
-
-
-
-
 }
 
 
 
 void loop() {
 
-int horaire[5];
+int horaire[10];
 
+int j = 0;
 
   // Traiter chaque URL
 for (int i = 0; i < 5; i++) {
   String response = getJson(urls[i]);
+
+  
 
   if (response != "") {
     Serial.println("\nRéponse JSON pour URL: ");
@@ -158,7 +152,7 @@ for (int i = 0; i < 5; i++) {
         Serial.println(passingtimesError.c_str());
         return;
       }
-
+      
       // Extraire les informations de chaque passage
       JsonArray passingtimes = passingtimesDoc.as<JsonArray>();
       for (JsonObject passingtime : passingtimes) {
@@ -170,6 +164,8 @@ for (int i = 0; i < 5; i++) {
         Serial.print("Temps d'arrivée prévu: ");
         Serial.println(expectedArrivalTime);
 
+        
+
         // Calculer la différence de temps
         struct tm expectedTime;
         if (parseDate(expectedArrivalTime, &expectedTime)) {
@@ -178,13 +174,21 @@ for (int i = 0; i < 5; i++) {
           time_t arrival = mktime(&expectedTime);  // Heure d'arrivée
           double diff = difftime(arrival, now);  // Différence en secondes
 
+
+
           // Afficher la différence
           if (diff >= 0) {
             int minutes = diff / 60;  // Conversion en minutes
             Serial.print("Temps restant avant l'arrivée : ");
             Serial.print(minutes);
             Serial.println(" minutes");
-            horaire[i] = minutes;
+            //horaire[i] = minutes;
+            horaire[j] = minutes;
+            j = j+1;
+            Serial.print(j);
+            Serial.println(" j");
+            
+            // On a que i valeurs car on a deux temps pour le même i, donc quand il calcul le 2e temps, on est tjs sur le même i et donc il écrase la valeur dans le tableau "horaire".
             
           } else {
             Serial.println("Le transport est déjà passé.");
@@ -207,22 +211,38 @@ for (auto i : horaire) {
   Serial.println(i);
 }
 
-
-//13 avant "13"
-tft.fillCircle(15,15,10, BLUE);
-testdrawtext(10,11,1.5,horaire[0],BLACK);
+// Pour éviter que ça s'écrive par dessus.
+tft.fillScreen(BLACK);
 
 //14
-tft.fillCircle(15,45+1,10, MAGENTA);
-testdrawtext(10,42,1.5,horaire[1],BLACK);
+tft.fillCircle(15,15,10, MAGENTA);
+testdrawtext(10,11,1.5,14,BLACK);
+testdrawtext(30,11,1.5,horaire[0],WHITE);
+testdrawtext(60,11,1.5,horaire[1],WHITE);
 
 //83
-tft.fillCircle(15,75+1,10, GREEN);
-testdrawtext(10,72,1.5,horaire[2],BLACK);
+tft.fillCircle(15,45+1,10, GREEN);
+testdrawtext(10,42,1.5,83,BLACK);
+testdrawtext(30,42,1.5,horaire[2],WHITE);
+testdrawtext(60,42,1.5,horaire[3],WHITE);
 
+//13
+tft.fillCircle(15,75+1,10, BLUE);
+testdrawtext(10,72,1.5,13,BLACK);
+testdrawtext(30,72,1.5,horaire[4],WHITE);
+testdrawtext(60,72,1.5,horaire[5],WHITE);
 
-tft.fillCircle(15,105+1,10, RED);
-testdrawtext(12,102,1.5,horaire[3],BLACK);
+//14
+tft.fillCircle(15,105+1,10, MAGENTA);
+testdrawtext(12,102,1.5,14,BLACK);
+testdrawtext(32,102,1.5,horaire[6],WHITE);
+testdrawtext(62,102,1.5,horaire[7],WHITE);
+
+//9
+tft.fillCircle(15,105+1,10, PINK);
+testdrawtext(12,128,1.5,14,BLACK);
+testdrawtext(32,128,1.5,horaire[8],WHITE);
+testdrawtext(62,128,1.5,horaire[9],WHITE);
 
 
 
